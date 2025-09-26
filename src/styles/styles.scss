@@ -1,0 +1,18 @@
+/* Angular Material theme */
+@use '@angular/material' as mat;
+@include mat.core();
+
+/* Tailwind layers first */
+@import "@angular/cdk/overlay-prebuilt.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+$theme: mat.define-theme();
+@include mat.all-component-themes($theme);
+
+/* App globals */
+body { margin: 0; font-family: Inter, Roboto, Arial, sans-serif; background: #fafafa; }
+section { background: transparent; }

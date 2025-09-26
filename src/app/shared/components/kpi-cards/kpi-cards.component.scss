@@ -1,0 +1,21 @@
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 16px;
+}
+.kpi {
+  display: grid;
+  align-content: center;
+  padding: 16px;
+  .label {
+    font-size: 14px;
+    color: #666;
+  }
+  .value {
+    font-size: 28px;
+    font-weight: 600;
+  }
+}
+.kpi.warn {
+  border-left: 4px solid #e53935;
+}

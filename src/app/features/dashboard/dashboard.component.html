@@ -1,0 +1,59 @@
+<section class="header flex flex-col gap-2 items-center justify-start w-100">
+    <app-kpi-cards
+        [totalProducts]="kpis().products"
+        [totalStock]="kpis().totalStock"
+        [lowStock]="kpis().lowCount" />
+
+    <section class="filters">
+        <mat-form-field appearance="outline">
+            <mat-select placeholder="Warehouse"
+                (valueChange)="selectedWarehouseId.set($event)">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let w of warehouses()"
+                    [value]="w.WarehouseID">{{ w.Name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-select placeholder="Category"
+                (valueChange)="selectedCategory.set($event)">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let c of categories()" [value]="c">{{ c
+                    }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox [checked]="lowOnly()"
+            (change)="lowOnly.set($event.checked)">Low stock only</mat-checkbox>
+
+        <button mat-stroked-button (click)="applyFilters()">Apply</button>
+        <button mat-button (click)="resetFilters()">Reset</button>
+    </section>
+
+    <section class="charts">
+        <div class="chart">
+            <apx-chart
+                [series]="barSeries()"
+                [chart]="{ type: 'bar', height: 320 }"
+                [xaxis]="{ categories: barCategories() }"
+                [plotOptions]="{ bar: { borderRadius: 4 } }"></apx-chart>
+        </div>
+
+        <div class="chart">
+            <apx-chart
+                [series]="pieSeries()"
+                [chart]="{ type: 'pie', height: 320 }"
+                [labels]="pieLabels()"></apx-chart>
+        </div>
+    </section>
+
+    <section class="drill">
+        <h2>Warehouse Drill-down</h2>
+        <div class="wh-list">
+            <a *ngFor="let w of warehouses()"
+                [routerLink]="['/warehouse', w.WarehouseID]" class="wh-card">
+                <div class="title">{{ w.Name }}</div>
+                <div class="sub">{{ w.Location }}</div>
+            </a>
+        </div>
+    </section>

@@ -1,0 +1,14 @@
+<div class="kpi-grid w-full items-center justify-start">
+    <mat-card class="kpi">
+        <div class="label">Total Products</div>
+        <div class="value">{{ totalProducts | numCompact }}</div>
+    </mat-card>
+    <mat-card class="kpi">
+        <div class="label">Total Stock</div>
+        <div class="value">{{ totalStock | numCompact }}</div>
+    </mat-card>
+    <mat-card class="kpi warn">
+        <div class="label">Below Reorder</div>
+        <div class="value">{{ lowStock | numCompact }}</div>
+    </mat-card>
+</div>
