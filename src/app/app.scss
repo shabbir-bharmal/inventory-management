@@ -1,0 +1,53 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.form-card,
+.list-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+}
+
+.add-item-form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.full-width {
+  flex: 1;
+}
+
+.mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.empty-list-text {
+  text-align: center;
+  color: #888;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .category-filter select {
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 0.9rem;
+  }
+}
+

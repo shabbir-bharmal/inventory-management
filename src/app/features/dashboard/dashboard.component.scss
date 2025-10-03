@@ -1,0 +1,73 @@
+$background-color_1: #ffcccc;
+.charts {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.chart {
+	flex: 1 1 45%;
+}
+.table {
+	margin-top: 2rem;
+	overflow-x: auto;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+th {
+	border: 1px solid #ddd;
+	padding: 0.5rem;
+}
+td {
+	border: 1px solid #ddd;
+	padding: 0.5rem;
+}
+.low-stock {
+	background-color: $background-color_1;
+}
+
+.card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  flex: 1;
+}
+
+.drill {
+  padding: 1rem;
+
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .wh-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .wh-card {
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    mat-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    mat-card-subtitle {
+      color: #666;
+    }
+  }
+}
+
