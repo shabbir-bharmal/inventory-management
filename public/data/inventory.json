@@ -1,0 +1,35 @@
+{
+  "products": [
+    { "ProductID": "P001", "ProductName": "Laptop", "Category": "Electronics", "Price": 800 },
+    { "ProductID": "P002", "ProductName": "Smartphone", "Category": "Electronics", "Price": 500 },
+    { "ProductID": "P003", "ProductName": "T-shirt", "Category": "Apparel", "Price": 20 },
+    { "ProductID": "P004", "ProductName": "Jeans", "Category": "Apparel", "Price": 40 },
+    { "ProductID": "P005", "ProductName": "Headphones", "Category": "Electronics", "Price": 60 },
+    { "ProductID": "P006", "ProductName": "Sneakers", "Category": "Apparel", "Price": 80 },
+    { "ProductID": "P007", "ProductName": "Coffee Maker", "Category": "Home Appliances", "Price": 120 },
+    { "ProductID": "P008", "ProductName": "Blender", "Category": "Home Appliances", "Price": 70 },
+    { "ProductID": "P009", "ProductName": "Backpack", "Category": "Accessories", "Price": 45 },
+    { "ProductID": "P010", "ProductName": "Watch", "Category": "Accessories", "Price": 150 }
+  ],
+  "warehouses": [
+    { "WarehouseID": "W001", "WarehouseName": "Central Depot", "Location": "New York" },
+    { "WarehouseID": "W002", "WarehouseName": "West Hub", "Location": "Los Angeles" },
+    { "WarehouseID": "W003", "WarehouseName": "East Hub", "Location": "Boston" },
+    { "WarehouseID": "W004", "WarehouseName": "South Hub", "Location": "Miami" },
+    { "WarehouseID": "W005", "WarehouseName": "North Hub", "Location": "Chicago" }
+  ],
+  "inventory": [
+    { "ProductID": "P001", "WarehouseID": "W001", "StockQty": 50, "ReorderLevel": 20 },
+    { "ProductID": "P001", "WarehouseID": "W002", "StockQty": 30, "ReorderLevel": 20 },
+    { "ProductID": "P002", "WarehouseID": "W001", "StockQty": 100, "ReorderLevel": 50 },
+    { "ProductID": "P002", "WarehouseID": "W003", "StockQty": 80, "ReorderLevel": 50 },
+    { "ProductID": "P003", "WarehouseID": "W003", "StockQty": 200, "ReorderLevel": 50 },
+    { "ProductID": "P004", "WarehouseID": "W002", "StockQty": 75, "ReorderLevel": 30 },
+    { "ProductID": "P005", "WarehouseID": "W004", "StockQty": 150, "ReorderLevel": 60 },
+    { "ProductID": "P006", "WarehouseID": "W005", "StockQty": 120, "ReorderLevel": 50 },
+    { "ProductID": "P007", "WarehouseID": "W001", "StockQty": 40, "ReorderLevel": 15 },
+    { "ProductID": "P008", "WarehouseID": "W002", "StockQty": 60, "ReorderLevel": 20 },
+    { "ProductID": "P009", "WarehouseID": "W003", "StockQty": 90, "ReorderLevel": 30 },
+    { "ProductID": "P010", "WarehouseID": "W004", "StockQty": 70, "ReorderLevel": 25 }
+  ]
+}

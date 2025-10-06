@@ -1,59 +1,89 @@
-<section class="header flex flex-col gap-2 items-center justify-start w-100">
-    <app-kpi-cards
-        [totalProducts]="kpis().products"
-        [totalStock]="kpis().totalStock"
-        [lowStock]="kpis().lowCount" />
+<h1>Inventory Dashboard</h1>
 
-    <section class="filters">
-        <mat-form-field appearance="outline">
-            <mat-select placeholder="Warehouse"
-                (valueChange)="selectedWarehouseId.set($event)">
-                <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let w of warehouses()"
-                    [value]="w.WarehouseID">{{ w.Name }}</mat-option>
-            </mat-select>
-        </mat-form-field>
+<!-- KPI Cards -->
+<div class="kpi-cards">
+  <div class="card">
+    <h3>Total Products</h3>
+    <p>{{ totalProducts }}</p>
+  </div>
+  <div class="card">
+    <h3>Total Stock</h3>
+    <p>{{ totalStock }}</p>
+  </div>
+  <div class="card">
+    <h3>Products Below Reorder</h3>
+    <p>{{ lowStockCount }}</p>
+  </div>
+</div>
 
-        <mat-form-field appearance="outline">
-            <mat-select placeholder="Category"
-                (valueChange)="selectedCategory.set($event)">
-                <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let c of categories()" [value]="c">{{ c
-                    }}</mat-option>
-            </mat-select>
-        </mat-form-field>
+<!-- Filters -->
+<div class="filters">
+  <label>Warehouse:
+    <select [(ngModel)]="selectedWarehouse" (change)="applyFilters()">
+      <option value="">All</option>
+      <option *ngFor="let w of data?.warehouses" [value]="w.WarehouseID">{{ w.WarehouseName }}</option>
+    </select>
+  </label>
 
-        <mat-checkbox [checked]="lowOnly()"
-            (change)="lowOnly.set($event.checked)">Low stock only</mat-checkbox>
+  <label>Category:
+    <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
+      <option value="">All</option>
+      <option *ngFor="let c of categories">{{ c }}</option>
+    </select>
+  </label>
 
-        <button mat-stroked-button (click)="applyFilters()">Apply</button>
-        <button mat-button (click)="resetFilters()">Reset</button>
-    </section>
+  <label>Stock Status:
+    <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+      <option value="">All</option>
+      <option value="low">Low Stock</option>
+      <option value="ok">OK</option>
+    </select>
+  </label>
 
-    <section class="charts">
-        <div class="chart">
-            <apx-chart
-                [series]="barSeries()"
-                [chart]="{ type: 'bar', height: 320 }"
-                [xaxis]="{ categories: barCategories() }"
-                [plotOptions]="{ bar: { borderRadius: 4 } }"></apx-chart>
-        </div>
+  <button (click)="refreshData()">Refresh</button>
+</div>
 
-        <div class="chart">
-            <apx-chart
-                [series]="pieSeries()"
-                [chart]="{ type: 'pie', height: 320 }"
-                [labels]="pieLabels()"></apx-chart>
-        </div>
-    </section>
+<!-- Charts -->
+<div class="charts">
+  <div class="chart card">
+    <h3>Stock per Warehouse</h3>
+    <apx-chart
+      [series]="barChartOptions.series"
+      [chart]="barChartOptions.chart"
+      [xaxis]="barChartOptions.xaxis">
+    </apx-chart>
+  </div>
 
-    <section class="drill">
-        <h2>Warehouse Drill-down</h2>
-        <div class="wh-list">
-            <a *ngFor="let w of warehouses()"
-                [routerLink]="['/warehouse', w.WarehouseID]" class="wh-card">
-                <div class="title">{{ w.Name }}</div>
-                <div class="sub">{{ w.Location }}</div>
-            </a>
-        </div>
-    </section>
+  <div class="chart card">
+    <h3>Stock per Category</h3>
+    <apx-chart
+      [series]="pieChartOptions.series"
+      [chart]="pieChartOptions.chart"
+      [labels]="pieChartOptions.labels"
+      [responsive]="pieChartOptions.responsive">
+    </apx-chart>
+  </div>
+</div>
+
+<!-- Low Stock Alerts Table -->
+<div class="table card">
+  <h3>Low Stock Alerts</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Warehouse</th>
+        <th>Stock</th>
+        <th>Reorder Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of filteredInventory" [class.low-stock]="item.StockQty <= item.ReorderLevel">
+        <td>{{ getProductName(item.ProductID) }}</td>
+        <td>{{ getWarehouseName(item.WarehouseID) }}</td>
+        <td>{{ item.StockQty }}</td>
+        <td>{{ item.ReorderLevel }}</td>
+      </tr>
+    </tbody>
+  </table> 
+</div>
