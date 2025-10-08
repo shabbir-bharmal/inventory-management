@@ -3,21 +3,21 @@
 <!-- KPI Cards -->
 <div class="kpi-cards">
   <div class="card">
+    <h3>Total Warehouses</h3>
+    <p style="font-size: 20px; font-weight: 500;">{{ dashboardSummary()?.totalWarehouses }}</p>
+  </div>
+  <div class="card">
     <h3>Total Products</h3>
-    <p>{{ totalProducts }}</p>
+    <p style="font-size: 20px; font-weight: 500;">{{ dashboardSummary()?.totalProducts }}</p>
   </div>
   <div class="card">
     <h3>Total Stock</h3>
-    <p>{{ totalStock }}</p>
-  </div>
-  <div class="card">
-    <h3>Products Below Reorder</h3>
-    <p>{{ lowStockCount }}</p>
+    <p style="font-size: 20px; font-weight: 500;">{{ dashboardSummary()?.totalProductStock }}</p>
   </div>
 </div>
 
 <!-- Filters -->
-<div class="filters">
+<!-- <div class="filters">
   <label>Warehouse:
     <select [(ngModel)]="selectedWarehouse" (change)="applyFilters()">
       <option value="">All</option>
@@ -41,25 +41,19 @@
   </label>
 
   <button (click)="refreshData()">Refresh</button>
-</div>
+</div> -->
 
 <!-- Charts -->
 <div class="charts">
   <div class="chart card">
     <h3>Stock per Warehouse</h3>
-    <apx-chart
-      [series]="barChartOptions.series"
-      [chart]="barChartOptions.chart"
-      [xaxis]="barChartOptions.xaxis">
+    <apx-chart [series]="barChartOptions.series" [chart]="barChartOptions.chart" [xaxis]="barChartOptions.xaxis">
     </apx-chart>
   </div>
 
   <div class="chart card">
     <h3>Stock per Category</h3>
-    <apx-chart
-      [series]="pieChartOptions.series"
-      [chart]="pieChartOptions.chart"
-      [labels]="pieChartOptions.labels"
+    <apx-chart [series]="pieChartOptions.series" [chart]="pieChartOptions.chart" [labels]="pieChartOptions.labels"
       [responsive]="pieChartOptions.responsive">
     </apx-chart>
   </div>
@@ -71,19 +65,19 @@
   <table>
     <thead>
       <tr>
-        <th>Product</th>
         <th>Warehouse</th>
+        <th>Product</th>
         <th>Stock</th>
         <th>Reorder Level</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of filteredInventory" [class.low-stock]="item.StockQty <= item.ReorderLevel">
-        <td>{{ getProductName(item.ProductID) }}</td>
-        <td>{{ getWarehouseName(item.WarehouseID) }}</td>
-        <td>{{ item.StockQty }}</td>
-        <td>{{ item.ReorderLevel }}</td>
+      <tr *ngFor="let item of warehouseInventory()" [class.low-stock]="item.quantity <= item.reorderLevel">
+        <td>{{ item.warehouse }}</td>
+        <td>{{ item.product }}</td>
+        <td class="center">{{ item.quantity }}</td>
+        <td class="center">{{ item.reorderLevel }}</td>
       </tr>
     </tbody>
-  </table> 
+  </table>
 </div>

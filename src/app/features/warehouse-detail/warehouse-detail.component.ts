@@ -23,11 +23,11 @@ export class WarehouseDetailComponent {
     warehouseId = signal<string>('');
     lowOnly = signal<any>(false);
     category = this.state.selectedCategory; // reuse global category list for select
-    rows = computed(() =>
-        this.state.inventoryEnriched().filter(r =>
-            r.WarehouseID === this.warehouseId() && (!this.lowOnly() || r.StockQty <= r.ReorderLevel) && (!this.category() || r.product?.Category === this.category())
-        )
-    );
+    // rows = computed(() =>
+    //     this.state.inventoryEnriched().filter(r =>
+    //         r.WarehouseID === this.warehouseId() && (!this.lowOnly() || r.StockQty <= r.ReorderLevel) && (!this.category() || r.product?.Category === this.category())
+    //     )
+    // );
     ngOnInit() {
         this.warehouseId.set(this.route.snapshot.paramMap.get('id') || '');
         // ensure latest inventory for this warehouse

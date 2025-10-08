@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { StateService } from '../../core/state.service';
@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+
 type BarChartOptions = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
@@ -34,7 +35,6 @@ type PieChartOptions = {
         MatCheckboxModule,
         MatIconModule,
         NgApexchartsModule,
-        KpiCardsComponent,
         FormsModule
     ],
     templateUrl: './dashboard.component.html',
@@ -42,19 +42,35 @@ type PieChartOptions = {
 })
 export class DashboardComponent {
     private state = inject(StateService);
-    kpis = this.state.kpis;
+    //kpis = this.state.kpis;
+    dashboardSummary = this.state.dashboardSummary;
     warehouses = this.state.warehouses;
     categories = this.state.categories;
+    warehouseInventory: any = this.state.inventory;
+
+    // goToPage(page: number) {
+    //     if (page < 1 || page > this.totalPages()) return;
+    //     this.currentPage.set(page);
+    // }
+
+    // nextPage() {
+    //     this.goToPage(this.currentPage() + 1);
+    // }
+
+    // prevPage() {
+    //     this.goToPage(this.currentPage() - 1);
+    // }
+
     // Chart options computed from state
-    barSeries = computed(() => [{
-        name: 'Total Stock',
-        data: this.state.totalStockPerWarehouse().map(x => x.total),
-    }]);
-    barCategories = computed(() => this.state.totalStockPerWarehouse().map(x => x.WarehouseID));
+    // barSeries = computed(() => [{
+    //     name: 'Total Stock',
+    //     data: this.state.totalStockPerWarehouse().map(x => x.total),
+    // }]);
+    // barCategories = computed(() => this.state.totalStockPerWarehouse().map(x => x.WarehouseID));
 
 
-    pieSeries = computed(() => this.state.totalStockPerCategory().map(x => x.total));
-    pieLabels = computed(() => this.state.totalStockPerCategory().map(x => x.category));
+    // pieSeries = computed(() => this.state.totalStockPerCategory().map(x => x.total));
+    // pieLabels = computed(() => this.state.totalStockPerCategory().map(x => x.category));
 
 
     // selectedWarehouseId = this.state.selectedWarehouseId;
@@ -101,21 +117,40 @@ export class DashboardComponent {
     constructor(private http: HttpClient) { }
 
     ngOnInit(): void {
-        this.loadData();
+        //this.loadData();
     }
 
-    loadData() {
-        this.http.get<any>('data/inventory.json').subscribe((res) => {
-            this.data = res;
-            // this.categories = [...new Set(res.products.map((p: any) => p.Category))];
-            this.filteredInventory = [...res.inventory];
-            this.calculateKPI();
-            this.setupCharts();
-        });
-    }
+    barChartEffect = effect(() => {
+        const summary = this.dashboardSummary();
+        if (!summary) return;
+
+        const categories = summary.stockPerWarehouse.map(w => w.warehouseName);
+        const data = summary.stockPerWarehouse.map(w => w.totalStock);
+
+        this.barChartOptions = {
+            series: [{ name: 'Stock', data }],
+            chart: { type: 'bar', height: 350 },
+            xaxis: { categories }
+        };
+    });
+
+    pieChartEffect = effect(() => {
+        const summary = this.dashboardSummary();
+        if (!summary || !summary.stockPerCategory) return;
+
+        const categories = summary.stockPerCategory.map(c => c.category);
+        const data = summary.stockPerCategory.map(c => c.totalStock);
+
+        this.pieChartOptions = {
+            series: data,
+            chart: { type: 'pie', height: 350 },
+            labels: categories,
+            responsive: [{ breakpoint: 480, options: { chart: { width: 200 }, legend: { position: 'bottom' } } }]
+        };
+    });
 
     refreshData() {
-        this.loadData();
+        //this.loadData();
     }
 
     calculateKPI() {
