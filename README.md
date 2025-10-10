@@ -6,6 +6,8 @@ A production‑ready Angular 18 dashboard that visualizes **inventory across war
 
 ---
 
+![Dashboard Screenshot](https://github.com/shabbir-bharmal/inventory-management/blob/main/public/images/inventory-dashboard.png)
+
 ## ✨ Features
 
 * **KPI Cards**: Total Products · Total Stock · Products Below Reorder Level
