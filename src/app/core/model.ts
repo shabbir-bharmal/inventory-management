@@ -1,29 +1,36 @@
-export interface Warehouse {
-    WarehouseID: string;
-    Name: string;
-    Location?: string;
+export interface DashboardSummary {
+    totalWarehouses: number;
+    totalProducts: number;
+    totalProductStock: number;
+    stockPerWarehouse: Warehouse[];
+    stockPerCategory: Category[];
 }
 
+export interface Warehouse {
+    warehouseID: string;
+    warehouseName: string;
+    location?: string;
+    totalStock?: number;
+}
+
+export interface Category {
+    category: string;
+    totalStock?: number;
+}
 
 export interface Product {
-    ProductID: string;
-    Name: string;
-    Category: string;
-    Price: number;
+    productID: string;
+    product: string;
+    category: string;
+    price: number;
 }
-
 
 export interface InventoryRow {
-    ProductID: string;
-    WarehouseID: string;
-    StockQty: number;
-    ReorderLevel: number;
-}
-
-
-export interface InventoryWithProduct extends InventoryRow {
-    product?: Product;
-    warehouse?: Warehouse;
+    productID: string;
+    product: string;
+    warehouseID: string;
+    quantity: number;
+    reorderLevel: number;
 }
 
 
