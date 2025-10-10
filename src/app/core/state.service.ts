@@ -1,6 +1,6 @@
 import { Injectable, Signal, computed, effect, signal } from '@angular/core';
 import { ApiService } from './api.service';
-import { forkJoin, map } from 'rxjs';
+import { BehaviorSubject, forkJoin, map } from 'rxjs';
 import { Product, Warehouse, DashboardSummary, InventoryRow } from './model';
 
 
@@ -11,6 +11,9 @@ export class StateService {
     readonly products = signal<Product[]>([]);
     readonly inventory = signal<InventoryRow[]>([]);
     readonly dashboardSummary = signal<DashboardSummary | null>(null);
+
+    private inventorySubject = new BehaviorSubject<any[]>([]);
+    inventory$ = this.inventorySubject.asObservable();
 
     // filters
     readonly selectedWarehouseId = signal<string | null>(null);
@@ -23,7 +26,11 @@ export class StateService {
         Array.from(new Set(this.products().map(p => p.category))).sort()
     );
 
+    updateInventory(data: any[]) {
+        this.inventorySubject.next(data);
+    }
 
+    
     // readonly inventoryEnriched = computed(() => {
     //     const inv = this.inventory();
     //     const prodMap = new Map(this.products().map(p => [p.ProductID, p] as const));

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { StateService } from '../../core/state.service';
@@ -11,6 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
 
 type BarChartOptions = {
     series: ApexAxisChartSeries;
@@ -28,6 +31,8 @@ type PieChartOptions = {
     selector: 'app-dashboard',
     imports: [
         CommonModule,
+        MatTableModule,
+        MatPaginatorModule,
         RouterModule,
         MatButtonModule,
         MatSelectModule,
@@ -35,18 +40,24 @@ type PieChartOptions = {
         MatCheckboxModule,
         MatIconModule,
         NgApexchartsModule,
-        FormsModule
+        FormsModule,
+        MatCardModule,
     ],
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-    private state = inject(StateService);
+    public state = inject(StateService);
     //kpis = this.state.kpis;
     dashboardSummary = this.state.dashboardSummary;
     warehouses = this.state.warehouses;
     categories = this.state.categories;
+    inventory$ = this.state.inventory$; 
     warehouseInventory: any = this.state.inventory;
+    displayedColumns: string[] = ['warehouse', 'product', 'quantity', 'reorderLevel'];
+    dataSource = new MatTableDataSource<any>([]);
+
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
 
     // goToPage(page: number) {
     //     if (page < 1 || page > this.totalPages()) return;
@@ -117,8 +128,34 @@ export class DashboardComponent {
     constructor(private http: HttpClient) { }
 
     ngOnInit(): void {
+        console.log(this.state.inventory$);
         //this.loadData();
     }
+
+
+
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+
+    }
+
+
+
+        // // Subscribe to inventory changes
+        // this.state.inventory$.subscribe((inventory) => {
+        // this.dataSource.data = inventory;
+        //     // Trigger table update
+        //     this.dataSource._updateChangeSubscription();
+        // });
+
+        // console.log(this.warehouseInventory());
+        // this.dataSource.data = this.warehouseInventory();
+        // this.dataSource.paginator = this.paginator;
+
+    itemsStockEffect = effect(() => {
+        const inv = this.state.inventory(); // read signal
+        this.dataSource.data = inv;
+    })
 
     barChartEffect = effect(() => {
         const summary = this.dashboardSummary();

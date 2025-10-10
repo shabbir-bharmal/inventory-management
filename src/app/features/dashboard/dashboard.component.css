@@ -33,6 +33,14 @@
   flex: 1 1 45%;
 }
 
+.full-width-table {
+  width: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
 .table {
   margin-top: 2rem;
   overflow-x: auto;
@@ -42,6 +50,12 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
+
+.table-card {
+  padding: 1rem;
+  border-radius: 12px;
+}
+
 
 td.center, th.center {
   text-align: center;
@@ -56,4 +70,12 @@ td {
 .low-stock {
   background-color: #edc6c6;
   font-weight: bold;
+}
+
+.mat-mdc-row{
+  height: 25px;
+}
+
+.mat-mdc-header-row{
+  height: 30px;
 }

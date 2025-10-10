@@ -59,25 +59,39 @@
   </div>
 </div>
 
-<!-- Low Stock Alerts Table -->
-<div class="table card">
+<div class="mat-elevation-z8 table card">
   <h3>Low Stock Alerts</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Warehouse</th>
-        <th>Product</th>
-        <th>Stock</th>
-        <th>Reorder Level</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of warehouseInventory()" [class.low-stock]="item.quantity <= item.reorderLevel">
-        <td>{{ item.warehouse }}</td>
-        <td>{{ item.product }}</td>
-        <td class="center">{{ item.quantity }}</td>
-        <td class="center">{{ item.reorderLevel }}</td>
-      </tr>
-    </tbody>
+
+  <table mat-table [dataSource]="dataSource" matSort class="custom-font-table">
+
+    <ng-container matColumnDef="warehouse">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Warehouse </th>
+      <td mat-cell *matCellDef="let row"> {{row.warehouse}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+      <td mat-cell *matCellDef="let row"> {{row.product}}% </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header> Stock </th>
+      <td class="center" mat-cell *matCellDef="let row" [class.low-stock]="row.quantity <= row.reorderLevel"> {{row.quantity}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="reorderLevel" >
+      <th class="center" mat-header-cell *matHeaderCellDef mat-sort-header> Reorder Level </th>
+      <td class="center" mat-cell *matCellDef="let row"> {{row.reorderLevel}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
   </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
+
+<!-- Low Stock Alerts Table -->
+ <ng-template #loading>
+  <p>Loading inventory...</p>
+</ng-template>

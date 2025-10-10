@@ -10,16 +10,13 @@ export class ApiService {
     private http = inject(HttpClient);
     private base = environment.apiBaseUrl;
 
-
     getWarehouses(): Observable<Warehouse[]> {
         return this.http.get<Warehouse[]>(`${this.base}/api/warehouses`);
     }
 
-
     getProducts(): Observable<Product[]> {
         return this.http.get<Product[]>(`${this.base}/api/products`);
     }
-
 
     getInventory(opts?: { warehouseId?: string; category?: string; lowOnly?: boolean }): Observable<InventoryRow[]> {
         let params = new HttpParams();
@@ -33,11 +30,9 @@ export class ApiService {
         return this.http.get<DashboardSummary>(`${this.base}/api/dashboard/summary`);
     }
 
-
     getLowInventory(): Observable<InventoryRow[]> {
         return this.http.get<InventoryRow[]>(`${this.base}/api/dashboard/inventory/low`);
     }
-
 
     refresh(): Observable<{ refreshed: boolean }> {
         return this.http.post<{ refreshed: boolean }>(`${this.base}/api/refresh`, {});

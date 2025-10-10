@@ -20,22 +20,19 @@ export interface Category {
 
 export interface Product {
     productID: string;
-    name: string;
+    product: string;
     category: string;
     price: number;
 }
 
 export interface InventoryRow {
     productID: string;
+    product: string;
     warehouseID: string;
-    stockQty: number;
+    quantity: number;
     reorderLevel: number;
 }
 
-export interface InventoryWithProduct extends InventoryRow {
-    product?: Product;
-    warehouse?: Warehouse;
-}
 
 export type Filters = {
     warehouseId?: string | null;
